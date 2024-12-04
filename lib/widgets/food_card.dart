@@ -64,7 +64,7 @@ class _FoodCardState extends State<FoodCard> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            elevation: 250,
+            elevation: 500,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
