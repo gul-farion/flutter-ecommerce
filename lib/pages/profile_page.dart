@@ -92,7 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 16),
 
-          // Password Field
           TextField(
             controller: _passwordController,
             obscureText: true,
@@ -107,7 +106,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 16),
 
-          // Login/Register Button
           ElevatedButton(
             onPressed: isLogin ? _login : _register,
             style: ElevatedButton.styleFrom(
@@ -124,7 +122,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           const SizedBox(height: 8),
 
-          // Toggle Between Login and Register
           TextButton(
             onPressed: () {
               setState(() {
@@ -158,7 +155,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-      Navigator.pushReplacementNamed(context, '/'); // Navigate to Home Page
+      Navigator.pushReplacementNamed(context, '/'); 
     } on FirebaseAuthException catch (e) {
       _showSnackBar("Ошибка: ${e.message}");
     } finally {
@@ -184,7 +181,7 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
-      Navigator.pushReplacementNamed(context, '/'); // Navigate to Home Page
+      Navigator.pushReplacementNamed(context, '/');
     } on FirebaseAuthException catch (e) {
       _showSnackBar("Ошибка: ${e.message}");
     } finally {
