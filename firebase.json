@@ -1,0 +1,16 @@
+{
+  "flutter": {
+    "platforms": {
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "flutter-pizza-abc5c",
+          "configurations": {
+            "macos": "1:937310847204:ios:ec0e39619ee7fe3bd1acf1",
+            "web": "1:937310847204:web:81030a275dc1a0cdd1acf1",
+            "windows": "1:937310847204:web:dcdb8a86e9bccd68d1acf1"
+          }
+        }
+      }
+    }
+  }
+}
