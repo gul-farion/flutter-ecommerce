@@ -100,8 +100,8 @@ class CartPage extends StatelessWidget {
   textAlign: TextAlign.center,
   keyboardType: TextInputType.number,
   inputFormatters: [
-    FilteringTextInputFormatter.digitsOnly, // Разрешить только цифры
-    FilteringTextInputFormatter.allow(RegExp(r'^([1-9]|1[0-5])$')), // Ограничение до 15
+    FilteringTextInputFormatter.digitsOnly, 
+    FilteringTextInputFormatter.allow(RegExp(r'^([1-9]|1[0-5])$')),
   ],
   decoration: const InputDecoration(
     border: OutlineInputBorder(),

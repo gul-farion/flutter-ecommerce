@@ -57,7 +57,10 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Мой аккаунт", style: TextStyle(color: Colors.white),),
+        title: const Text(
+          "Мой аккаунт",
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.black,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
@@ -76,7 +79,7 @@ class _AccountPageState extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // User Info Section
-                    _buildUserInfoCard(),
+                    _buildUserInfoTile(),
 
                     const SizedBox(height: 24),
 
@@ -86,6 +89,7 @@ class _AccountPageState extends State<AccountPage> {
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -95,111 +99,137 @@ class _AccountPageState extends State<AccountPage> {
                           "У вас пока нет заказов.",
                           style: TextStyle(
                             fontSize: 16,
-                            color: Colors.grey[700],
+                            color: Colors.grey[500],
                           ),
                         ),
                       )
                     else
-                      ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: orderHistory.length,
-                        itemBuilder: (context, index) {
-                          final order = orderHistory[index];
-                          return _buildOrderCard(order);
-                        },
-                      ),
+                      _buildOrderHistoryTiles(),
                   ],
                 ),
               ),
             ),
+      backgroundColor: Colors.black,
     );
   }
 
-  Widget _buildUserInfoCard() {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const CircleAvatar(
-              radius: 40,
-              backgroundColor: Colors.black,
-              child: Icon(
-                Icons.person,
-                color: Colors.white,
-                size: 40,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              user?.email ?? "Неизвестный пользователь",
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Divider(),
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.email, color: Colors.black),
-                const SizedBox(width: 8),
-                Text(
-                  user?.email ?? "-",
-                  style: const TextStyle(fontSize: 16),
+  Widget _buildUserInfoTile() {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[900],
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.black,
+                child: Icon(
+                  Icons.person,
+                  color: Colors.white,
+                  size: 40,
                 ),
-              ],
-            ),
-          ],
-        ),
+              ),
+              const SizedBox(width: 16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      user?.email ?? "Неизвестный пользователь",
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Статус: Активный",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Дата регистрации: ${user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? '-'}",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[400],
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     );
   }
 
-  Widget _buildOrderCard(Map<String, dynamic> order) {
-    final items = order['items'] as List<dynamic>;
-    final totalPrice = order['totalPrice'] as num;
-
-    return Card(
-      elevation: 3,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      margin: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Заказ: ${order['createdAt']?.toDate().toLocal()}",
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
+  Widget _buildOrderHistoryTiles() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      itemCount: orderHistory.length,
+      itemBuilder: (context, index) {
+        final order = orderHistory[index];
+        return Container(
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.grey[850],
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Заказ от: ${order['createdAt']?.toDate().toLocal()}",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            const SizedBox(height: 8),
-            ...items.map((item) {
-              return Text(
-                "- ${item['name']} x ${item['quantity']}",
-                style: const TextStyle(fontSize: 14),
-              );
-            }),
-            const SizedBox(height: 8),
-            Text(
-              "Общая сумма: ${totalPrice.toStringAsFixed(2)} ₸",
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.green,
+              const SizedBox(height: 8),
+              Column(
+                children: (order['items'] as List<dynamic>).map((item) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "${item['name']} x${item['quantity']}",
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      Text(
+                        "${item['price']} ₸",
+                        style: const TextStyle(
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  );
+                }).toList(),
               ),
-            ),
-          ],
-        ),
-      ),
+              const SizedBox(height: 8),
+              Text(
+                "Общая сумма: ${order['totalPrice'].toStringAsFixed(2)} ₸",
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green,
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }
