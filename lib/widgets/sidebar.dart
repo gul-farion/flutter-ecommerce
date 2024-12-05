@@ -1,5 +1,3 @@
-// lib/widgets/sidebar.dart
-
 import 'package:flutter/material.dart';
 
 class Sidebar extends StatelessWidget {

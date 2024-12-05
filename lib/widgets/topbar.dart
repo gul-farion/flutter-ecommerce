@@ -35,11 +35,11 @@ class Topbar extends StatelessWidget implements PreferredSizeWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   const Text(
-                    "10:00 - 23:00",
+                    "Работаем круглосуточно!",
                     style: TextStyle(
                       color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   GestureDetector(
