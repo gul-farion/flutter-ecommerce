@@ -5,8 +5,11 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   bitsdojo_window_windows
   cloud_firestore
+  desktop_window
   firebase_auth
   firebase_core
+  screen_retriever_windows
+  window_manager
   window_size
 )
 

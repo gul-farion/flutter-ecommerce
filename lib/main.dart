@@ -10,6 +10,8 @@ import 'providers/cart_provider.dart';
 import 'providers/category_provider.dart'; 
 import 'pages/home_page.dart';
 import 'pages/cart_page.dart';
+import 'package:window_manager/window_manager.dart';
+import 'package:desktop_window/desktop_window.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +19,18 @@ void main() async {
   
   final categoryProvider = CategoryProvider();
   await categoryProvider.fetchCategories(); 
+  await windowManager.ensureInitialized();
 
       WidgetsFlutterBinding.ensureInitialized();
-      if (Platform.isLinux || Platform.isMacOS || Platform.isWindows) {
+      if (Platform.isWindows) {
         setWindowTitle("Пиццерия Джоннис");
-        setWindowMinSize(const Size(1900, 900));
+        WindowManager.instance.setMinimumSize(const Size(1700, 800));
+        setWindowMaxSize(const Size(1440, 1200));
+    setWindowMinSize(const Size(1440, 900));
+    Size size = await DesktopWindow.getWindowSize();
+ DesktopWindow.setWindowSize(Size(1440,900));
+ await DesktopWindow.setMinWindowSize(Size(1440,900));
+ DesktopWindow.setFullScreen(true);
       }
   runApp(
     MultiProvider(
