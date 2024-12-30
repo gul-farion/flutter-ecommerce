@@ -27,7 +27,6 @@ void main() async {
         WindowManager.instance.setMinimumSize(const Size(1700, 800));
         setWindowMaxSize(const Size(1440, 1200));
     setWindowMinSize(const Size(1440, 900));
-    Size size = await DesktopWindow.getWindowSize();
  DesktopWindow.setWindowSize(Size(1440,900));
  await DesktopWindow.setMinWindowSize(Size(1440,900));
  DesktopWindow.setFullScreen(true);
