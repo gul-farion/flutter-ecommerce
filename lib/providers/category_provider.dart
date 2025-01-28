@@ -1,5 +1,3 @@
-// lib/providers/category_provider.dart
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/food_item.dart';
@@ -11,13 +9,45 @@ class CategoryProvider extends ChangeNotifier {
   bool isLoading = false;
   String debugMessage = "";
 
+  Future<void> fetchAllFoodItems() async {
+  try {
+    isLoading = true;
+    debugMessage = "Fetching all items...";
+    notifyListeners();
+
+    final snapshot = await FirebaseFirestore.instance.collection('products').get();
+
+    foodItems = snapshot.docs.map((doc) {
+      return FoodItem(
+        name: doc['name'] as String,
+        body: doc['body'] ?? '',
+        price: (doc['price'] as num).toDouble(),
+        imageUrl: doc['imageUrl'] as String,
+      );
+    }).toList();
+
+    debugMessage = "Fetched ${foodItems.length} items.";
+    notifyListeners();
+  } catch (e) {
+    debugMessage = "Error fetching items: $e";
+    foodItems = [];
+    notifyListeners();
+  } finally {
+    isLoading = false;
+    notifyListeners();
+  }
+}
+
+
   Future<void> fetchCategories() async {
     try {
       debugMessage = "Fetching categories...";
       notifyListeners();
 
-      final snapshot =
-          await FirebaseFirestore.instance.collection('categories').get();
+      final snapshot = await FirebaseFirestore.instance
+          .collection('categories')
+          .get();
+
       categories = snapshot.docs.map((doc) => doc['title'].toString()).toList();
       activeCategory = categories.isNotEmpty ? categories[0] : null;
 
@@ -33,49 +63,50 @@ class CategoryProvider extends ChangeNotifier {
     }
   }
 
-Future<void> fetchFoodItems(String category) async {
+  Future<void> fetchFoodItems([String? category]) async {
   try {
     isLoading = true;
-    debugMessage = "Fetching items for $category...";
+    debugMessage = category == null
+        ? "Fetching all products..."
+        : "Fetching products for category: $category...";
     notifyListeners();
 
-    // Map category titles to Firestore collection names
-    final collectionMap = {
-      'Пиццы': 'pizzas',
-      'Комбо': 'combos',
-      'Соусы': 'sauces',
-      'Напитки': 'drinks',
-      'Закуски': 'snacks',
-      'Десерты': 'desserts',
-    };
+    // Формируем запрос
+    Query query = FirebaseFirestore.instance.collection('products');
+    if (category != null) {
+      query = query.where('category', isEqualTo: category);
+    }
 
-    final collectionName = collectionMap[category];
-    if (collectionName == null) {
-      debugMessage = "No matching collection for $category.";
-      foodItems = []; // Clear items
+    final snapshot = await query.get();
+
+    // Если данные пустые
+    if (snapshot.docs.isEmpty) {
+      debugMessage = category == null
+          ? "No products found in 'products' collection."
+          : "No products found for category: $category.";
+      foodItems = [];
       notifyListeners();
       return;
     }
 
-    // Fetch documents from the collection
-    final snapshot =
-        await FirebaseFirestore.instance.collection(collectionName).get();
-
-    // Convert documents to FoodItem list
+    // Преобразуем документы в FoodItem
     foodItems = snapshot.docs.map((doc) {
+      debugPrint("Document data: ${doc.data()}");
       return FoodItem(
         name: doc['name'] as String,
-        body: doc['body'] ?? '', // Handle missing 'body' field
+        body: doc['body'] ?? '',
         price: (doc['price'] as num).toDouble(),
-        imageUrl: doc['imageUrl'] as String,
+        imageUrl: doc['image'] as String,
       );
     }).toList();
 
-    debugMessage = "Fetched ${foodItems.length} items for $category.";
+    debugMessage = category == null
+        ? "Fetched ${foodItems.length} products."
+        : "Fetched ${foodItems.length} products for category: $category.";
     notifyListeners();
   } catch (e) {
-    debugMessage = "Error fetching food items: $e";
-    foodItems = []; // Clear items on error
+    debugMessage = "Error fetching products: $e";
+    foodItems = [];
     notifyListeners();
   } finally {
     isLoading = false;

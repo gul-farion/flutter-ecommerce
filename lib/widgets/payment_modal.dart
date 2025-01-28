@@ -156,6 +156,29 @@ class _PaymentModalState extends State<PaymentModal> {
                             return null;
                           },
                         ),
+                        TextFormField(
+  keyboardType: TextInputType.number,
+  maxLength: 3,
+  inputFormatters: [
+    FilteringTextInputFormatter.digitsOnly,
+    CVVInputFormatter(),
+  ],
+  decoration: const InputDecoration(
+    labelText: "CVC код",
+    hintText: "XXX",
+    border: OutlineInputBorder(),
+  ),
+  validator: (value) {
+    if (value == null || value.isEmpty) {
+      return "Введите CVC код";
+    }
+    if (value.length != 3 || !RegExp(r'^\d{3}$').hasMatch(value)) {
+      return "Некорректный формат CVC кода";
+    }
+    return null;
+  },
+),
+
                       ],
                     ),
                   ),
@@ -177,7 +200,7 @@ class _PaymentModalState extends State<PaymentModal> {
                     widget.onOrderSuccess();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.black,
+                    backgroundColor: Color(0xff0A78D6),
                     padding: const EdgeInsets.symmetric(
                         horizontal: 24, vertical: 12),
                   ),
@@ -229,3 +252,17 @@ class _ExpiryDateInputFormatter extends TextInputFormatter {
     );
   }
 }
+
+class CVVInputFormatter extends TextInputFormatter {
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, TextEditingValue newValue) {
+    final text = newValue.text.replaceAll(' ', ''); // Removes any spaces
+    if (text.length > 3) return oldValue; // Limits the input to 3 digits
+    return TextEditingValue(
+      text: text,
+      selection: TextSelection.collapsed(offset: text.length),
+    );
+  }
+}
+

@@ -64,7 +64,7 @@ class _FoodCardState extends State<FoodCard> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            elevation: 500,
+            elevation: 0,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -104,7 +104,7 @@ class _FoodCardState extends State<FoodCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        '${widget.foodItem.price.toStringAsFixed(0)} ₸',
+                        'Цена: ${widget.foodItem.price.toStringAsFixed(0)} ₸',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -114,7 +114,7 @@ class _FoodCardState extends State<FoodCard> {
                         ElevatedButton(
                           onPressed: widget.onAddToBasket,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.black,
+                            backgroundColor: Color(0xff0A78D6),
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 2,
@@ -124,7 +124,7 @@ class _FoodCardState extends State<FoodCard> {
                               borderRadius: BorderRadius.circular(2),
                             ),
                           ),
-                          child: const Text('+', style: TextStyle(fontSize: 22),),
+                          child: Icon(Icons.add_shopping_cart, color: Colors.white),
                         ),
                     ],
                   ),

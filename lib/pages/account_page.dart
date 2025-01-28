@@ -61,7 +61,7 @@ class _AccountPageState extends State<AccountPage> {
           "Мой аккаунт",
           style: TextStyle(color: Colors.white),
         ),
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff0A78D6),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           color: Colors.white,
@@ -109,18 +109,19 @@ class _AccountPageState extends State<AccountPage> {
                 ),
               ),
             ),
-      backgroundColor: Colors.black,
+      backgroundColor: Color(0xff0a78d6),
     );
   }
 
   Widget _buildUserInfoTile() {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: const Color.fromARGB(255, 255, 255, 255),
         borderRadius: BorderRadius.circular(16),
       ),
       padding: const EdgeInsets.all(16),
       child: Column(
+        
         children: [
           Row(
             children: [
@@ -143,7 +144,7 @@ class _AccountPageState extends State<AccountPage> {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -151,7 +152,7 @@ class _AccountPageState extends State<AccountPage> {
                       "Статус: Активный",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey[400],
+                        color: Colors.black,
                       ),
                     ),
                     const SizedBox(height: 4),
@@ -159,7 +160,7 @@ class _AccountPageState extends State<AccountPage> {
                       "Дата регистрации: ${user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? '-'}",
                       style: TextStyle(
                         fontSize: 14,
-                        color: Colors.grey[400],
+                        color: Colors.black,
                       ),
                     ),
                   ],
@@ -183,7 +184,7 @@ class _AccountPageState extends State<AccountPage> {
           margin: const EdgeInsets.symmetric(vertical: 8.0),
           padding: const EdgeInsets.all(16),
           decoration: BoxDecoration(
-            color: Colors.grey[850],
+            color: Colors.white,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(
@@ -191,10 +192,10 @@ class _AccountPageState extends State<AccountPage> {
             children: [
               Text(
                 "Заказ от: ${order['createdAt']?.toDate().toLocal()}",
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Colors.black,
                 ),
               ),
               const SizedBox(height: 8),
@@ -205,12 +206,12 @@ class _AccountPageState extends State<AccountPage> {
                     children: [
                       Text(
                         "${item['name']} x${item['quantity']}",
-                        style: const TextStyle(color: Colors.white),
+                        style: const TextStyle(color: Colors.black),
                       ),
                       Text(
                         "${item['price']} ₸",
                         style: const TextStyle(
-                          color: Colors.grey,
+                          color: Colors.black,
                         ),
                       ),
                     ],

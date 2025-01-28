@@ -1,46 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:pizzeria_app/widgets/topbar.dart';
 import 'package:provider/provider.dart';
 import '../providers/category_provider.dart';
-import '../widgets/sidebar.dart';
 import '../widgets/food_grid.dart';
-import '../widgets/topbar.dart';
-import '../widgets/footer.dart'; 
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final categoryProvider =
+          Provider.of<CategoryProvider>(context, listen: false);
+      categoryProvider.fetchFoodItems(); // Загружаем все продукты
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final categoryProvider = Provider.of<CategoryProvider>(context);
-    final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: const Topbar(),
-      body: Column(
-        children: [
-          Expanded(
-            child: Row(
-              children: [
-                Sidebar(
-                  categories: categoryProvider.categories,
-                  activeCategory: categoryProvider.activeCategory,
-                  onCategorySelect: (category) {
-                    categoryProvider.setActiveCategory(category);
-                  },
-                  width: screenWidth * 0.12,
-                ),
-                Expanded(
-                  child: FoodGrid(
-                    foodItems: categoryProvider.foodItems,
-                    isLoading: categoryProvider.isLoading,
-                    debugMessage: categoryProvider.debugMessage,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Footer(),
-        ],
+      drawer: const AppDrawer(),
+      body: FoodGrid(
+        // foodItems: categoryProvider.foodItems,
+        // isLoading: categoryProvider.isLoading,
+        // debugMessage: categoryProvider.debugMessage,
       ),
     );
   }

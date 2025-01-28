@@ -21,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xff0A78D6),
         title: const Text(
           'Авторизация',
           style: TextStyle(color: Colors.white),
@@ -35,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF252323), Color(0xFF70798C)],
+            colors: [Color(0xFF0a78d6), Color(0xFFffffff)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),

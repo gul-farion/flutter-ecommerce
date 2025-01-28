@@ -1,141 +1,119 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/food_item.dart';
+import '../widgets/food_card.dart';
 import 'package:provider/provider.dart';
 import '../providers/cart_provider.dart';
-import '../models/food_item.dart';
-import 'food_card.dart';
 
-class FoodGrid extends StatelessWidget {
-  const FoodGrid({super.key});
+class CategoryPage extends StatelessWidget {
+  final String categoryName;
+
+  const CategoryPage({super.key, required this.categoryName});
 
   @override
   Widget build(BuildContext context) {
-    // Список категорий
-    final List<String> categories = [
-      'Обувь',
-      'Одежда',
-      // 'Спортивный инвентарь',
-      'Аксессуары',
-      'Экипировка'
-    ];
+    final cartProvider = Provider.of<CartProvider>(context);
 
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: categories.map((category) {
-          return _buildCategorySection(context, category);
-        }).toList(),
-      ),
-    );
-  }
-
-  // Построение секции для категории
-  Widget _buildCategorySection(BuildContext context, String category) {
     final Stream<QuerySnapshot> categoryStream = FirebaseFirestore.instance
         .collection('products')
-        .where('category', isEqualTo: category)
-        .limit(4) // Ограничиваем до 4 элементов
+        .where('category', isEqualTo: categoryName)
         .snapshots();
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Название секции
-          Text(
-            category,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () {
+              Navigator.pop(context);
+            },
           ),
-          const SizedBox(height: 8),
+        ),
+        backgroundColor: Color(0xff0A78D6),
+        title: Text(categoryName,
+            style: const TextStyle(color: Colors.white, fontSize: 20)
+        ),
+        actions: [
+        Row(
+          children: [
+            IconButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/cart');
+              },
+              icon: const Icon(Icons.shopping_cart, color: Colors.white),
+            ),
+            Text(
+              "${cartProvider.totalPrice.toStringAsFixed(2)} ₸",
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 8),
+          ],
+        ),
+      ],
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream: categoryStream,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(
+              child: Text(
+                "В этой категории пока нет товаров",
+                style: TextStyle(fontSize: 16),
+              ),
+            );
+          }
 
-          // Сетка товаров
-          StreamBuilder<QuerySnapshot>(
-            stream: categoryStream,
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return const Text(
-                  "В этой категории пока нет товаров.",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
-                );
-              }
+          final products = snapshot.data!.docs;
 
-              final products = snapshot.data!.docs.map((doc) {
-                final data = doc.data() as Map<String, dynamic>;
-                return FoodItem(
-                  name: data['name'] as String,
-                  body: data['body'] ?? '',
-                  price: (data['price'] as num).toDouble(),
-                  imageUrl: data['image'] as String,
-                );
-              }).toList();
+          return GridView.builder(
+            
+            padding: const EdgeInsets.all(28.0),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              crossAxisSpacing: 16,
+              mainAxisSpacing: 24,
+              childAspectRatio: 0.75,
+            ),
+            itemCount: products.length,
+            itemBuilder: (context, index) {
+              final product = products[index];
+              final foodItem = FoodItem(
+                name: product['name'],
+                body: product['body'] ?? '',
+                price: (product['price'] as num).toDouble(),
+                imageUrl: product['image'],
+              );
 
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 4,  
-                  childAspectRatio: 4 / 4,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                ),
-                itemCount: products.length,
-                itemBuilder: (context, index) {
-                  final product = products[index];
-                  final cartProvider = Provider.of<CartProvider>(context, listen: false);
-                  return FoodCard(
-                    foodItem: product,
-                    onTap: () {
-                      _showFoodDetails(context, product, cartProvider);
-                    },
-                    onAddToBasket: () {
-                      cartProvider.addItem(product);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${product.name} добавлен в корзину'),
-                        ),
-                      );
-                    },
+              return FoodCard(
+                foodItem: foodItem,
+                onTap: () {
+                  _showProductDetails(context, foodItem, cartProvider);
+                },
+                onAddToBasket: () {
+                  cartProvider.addItem(foodItem);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('${foodItem.name} добавлен в корзину'),
+                    ),
                   );
                 },
               );
             },
-          ),
-          const SizedBox(height: 20),
-
-          // Кнопка перехода в каталог
-          Align(
-            alignment: Alignment.centerRight,
-            child: ElevatedButton(
-              onPressed: () {
-                Scaffold.of(context).openDrawer();
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF0A78D6),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 20,
-                  vertical: 16,
-                ),
-              ),
-              child: const Text(
-                'Перейти к каталогу',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
-          ),
-          const SizedBox(height: 16),
-        ],
+          );
+        },
       ),
     );
   }
 
- void _showFoodDetails(BuildContext context, FoodItem foodItem, CartProvider cartProvider) {
+  void _showProductDetails(BuildContext context, FoodItem foodItem, CartProvider cartProvider) {
   String? selectedSize;
 
   showDialog(
@@ -287,5 +265,4 @@ class FoodGrid extends StatelessWidget {
     },
   );
 }
-
 }

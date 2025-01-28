@@ -4,8 +4,6 @@ import '../providers/cart_provider.dart';
 import '../widgets/payment_modal.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
-
 
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
@@ -17,8 +15,11 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
-        title: const Text('Корзина', style: TextStyle(color: Colors.white),),
-        backgroundColor: Colors.black,
+        title: const Text(
+          'Корзина',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: const Color(0xff0A78D6),
       ),
       body: cart.items.isEmpty
           ? const Center(
@@ -27,208 +28,239 @@ class CartPage extends StatelessWidget {
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
             )
-          : Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          : Stack(
               children: [
-                Expanded(
-                  
-                  flex: 4,
-                  child: ListView.builder(
-                    itemCount: cart.items.length,
-                    itemBuilder: (context, index) {
-                      final item = cart.items[index];
-                      final quantity = cart.getQuantity(item);
+                Container(
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [Color(0xff0A78D6), Colors.white],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+                Column(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(16.0),
+                        itemCount: cart.items.length,
+                        itemBuilder: (context, index) {
+                          final item = cart.items[index];
+                          final quantity = cart.getQuantity(item);
 
-                      return Container(
-                        padding: const EdgeInsets.all(12),
-                        decoration: const BoxDecoration(
-                          border: Border(
-                            bottom: BorderSide(color: Colors.grey, width: 1),
-                          ),
-                          
-                        ),
-                        
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Image.network(
-                              item.imageUrl,
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
+                          return Card(
+                            elevation: 4,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                            const SizedBox(width: 16),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
+                            margin: const EdgeInsets.only(bottom: 16),
+                            child: Padding(
+                              padding: const EdgeInsets.all(12.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
-                                  Text(
-                                    item.name,
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: Image.network(
+                                      item.imageUrl,
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.contain,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    item.body, 
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      color: Color.fromARGB(255, 0, 0, 0),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          item.name,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        if (item.selectedSize != null)
+                                          Text(
+                                            'Размер: ${item.selectedSize}',
+                                            style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.grey,
+                                            ),
+                                          ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          item.body,
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.grey,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Text(
+                                          '${item.price.toStringAsFixed(2)} ₸',
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xff0A78D6),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    '${item.price.toStringAsFixed(2)} ₸',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
+                                  const SizedBox(width: 16),
+                                  Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.remove,
+                                              color: Colors.red,
+                                            ),
+                                            onPressed: quantity > 1
+                                                ? () {
+                                                    cart.updateItemQuantity(
+                                                        item, quantity - 1);
+                                                  }
+                                                : null,
+                                          ),
+                                          Text(
+                                            quantity.toString(),
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                          IconButton(
+                                            icon: const Icon(
+                                              Icons.add,
+                                              color: Colors.green,
+                                            ),
+                                            onPressed: quantity < 15
+                                                ? () {
+                                                    cart.updateItemQuantity(
+                                                        item, quantity + 1);
+                                                  }
+                                                : null,
+                                          ),
+                                        ],
+                                      ),
+                                      IconButton(
+                                        icon: const Icon(Icons.close,
+                                            color: Colors.red),
+                                        onPressed: () {
+                                          cart.removeItem(item);
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 16),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 50,
-                                  child: TextFormField(
-  initialValue: quantity.toString(),
-  textAlign: TextAlign.center,
-  keyboardType: TextInputType.number,
-  inputFormatters: [
-    FilteringTextInputFormatter.digitsOnly, 
-    FilteringTextInputFormatter.allow(RegExp(r'^([1-9]|1[0-5])$')),
-  ],
-  decoration: const InputDecoration(
-    border: OutlineInputBorder(),
-  ),
-  onChanged: (value) {
-    final newQuantity = int.tryParse(value) ?? 1;
-    cart.updateItemQuantity(item, newQuantity);
-  },
-),
-
-                                ),
-                                const SizedBox(height: 8),
-                                IconButton(
-                                  icon: const Icon(Icons.close),
-                                  onPressed: () {
-                                    cart.removeItem(item);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    color: Colors.black,
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Обзор заказа',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Expanded(
-                          child: ListView.builder(
-                            itemCount: cart.items.length,
-                            itemBuilder: (context, index) {
-                              final item = cart.items[index];
-                              final quantity = cart.getQuantity(item);
-
-                              return Container(
-                                margin: const EdgeInsets.only(bottom: 8),
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[850],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      item.name,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      '${(item.price * quantity).toStringAsFixed(2)} ₸',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          'Итого: ${cart.totalPrice.toStringAsFixed(2)} ₸',
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        ElevatedButton(
-                          onPressed: cart.totalPrice < 1000
-                              ? null
-                              : () => showDialog(
-                                    context: context,
-                                    builder: (context) => PaymentModal(
-                                      onOrderSuccess: () async {
-                                        await _saveOrderToFirestore(cart);
-                                        cart.clear();
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(
-                                          const SnackBar(
-                                            content: Text('Заказ успешно оформлен!'),
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 12), 
-                          ),
-                          child: const Text(
-                            'Оформить заказ',
-                            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                      ],
+                          );
+                        },
+                      ),
                     ),
-                  ),
+                    _buildOrderSummary(context, cart),
+                  ],
                 ),
               ],
             ),
+    );
+  }
+
+  Widget _buildOrderSummary(BuildContext context, CartProvider cart) {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(0, -2),
+            blurRadius: 8,
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const Text(
+            'Обзор заказа',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Column(
+            children: cart.items.map((item) {
+              final quantity = cart.getQuantity(item);
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '${item.name} x$quantity',
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      '${(item.price * quantity).toStringAsFixed(2)} ₸',
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
+          const Divider(),
+          Text(
+            'Итого: ${cart.totalPrice.toStringAsFixed(2)} ₸',
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Color(0xff0A78D6),
+            ),
+          ),
+          const SizedBox(height: 16),
+          ElevatedButton(
+            onPressed: cart.totalPrice < 1000
+                ? null
+                : () => showDialog(
+                      context: context,
+                      builder: (context) => PaymentModal(
+                        onOrderSuccess: () async {
+                          await _saveOrderToFirestore(cart);
+                          cart.clear();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Заказ успешно оформлен!'),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xff0A78D6),
+              padding: const EdgeInsets.symmetric(vertical: 12),
+            ),
+            child: const Text(
+              'Оформить заказ',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -240,11 +272,13 @@ class CartPage extends StatelessWidget {
 
       await orderRef.set({
         'userId': user?.uid,
-        'items': cart.items.map((item) => {
-              'name': item.name,
-              'quantity': cart.getQuantity(item),
-              'price': item.price,
-            }).toList(),
+        'items': cart.items
+            .map((item) => {
+                  'name': item.name,
+                  'quantity': cart.getQuantity(item),
+                  'price': item.price,
+                })
+            .toList(),
         'totalPrice': cart.totalPrice,
         'createdAt': FieldValue.serverTimestamp(),
       });
