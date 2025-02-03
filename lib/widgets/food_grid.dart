@@ -12,10 +12,10 @@ class FoodGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     // Список категорий
     final List<String> categories = [
-      'Обувь',
-      'Одежда',
+      'Аяқ киім',
+      'Киім',
       // 'Спортивный инвентарь',
-      'Аксессуары',
+      'Аксессуарлар',
       'Экипировка'
     ];
 
@@ -61,7 +61,7 @@ class FoodGrid extends StatelessWidget {
               }
               if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                 return const Text(
-                  "В этой категории пока нет товаров.",
+                  "Бұл категорияда тауарлар жоқ.",
                   style: TextStyle(fontSize: 16, color: Colors.grey),
                 );
               }
@@ -98,7 +98,7 @@ class FoodGrid extends StatelessWidget {
                       cartProvider.addItem(product);
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('${product.name} добавлен в корзину'),
+                          content: Text('${product.name} себетке қосылды'),
                         ),
                       );
                     },
@@ -124,7 +124,7 @@ class FoodGrid extends StatelessWidget {
                 ),
               ),
               child: const Text(
-                'Перейти к каталогу',
+                'Каталогты қарау',
                 style: TextStyle(color: Colors.white),
               ),
             ),
@@ -164,6 +164,7 @@ class FoodGrid extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisSize: MainAxisSize.min,
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
                           foodItem.name,
@@ -233,7 +234,7 @@ class FoodGrid extends StatelessWidget {
 
                         const SizedBox(height: 16),
                         Text(
-                          'Цена: ${foodItem.price.toStringAsFixed(2)} ₸',
+                          'Баға: ${foodItem.price.toStringAsFixed(2)} ₸',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -243,7 +244,6 @@ class FoodGrid extends StatelessWidget {
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: () {
-                            // Create a new FoodItem with selected size
                             final itemToAdd = FoodItem(
                               name: foodItem.name,
                               body: foodItem.body,
@@ -256,7 +256,7 @@ class FoodGrid extends StatelessWidget {
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('${foodItem.name} добавлен в корзину'),
+                                content: Text('${foodItem.name} себетке қосылды'),
                               ),
                             );
                           },
@@ -271,7 +271,7 @@ class FoodGrid extends StatelessWidget {
                             ),
                           ),
                           child: const Text(
-                            'Добавить в корзину',
+                            'Себетке қосу',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

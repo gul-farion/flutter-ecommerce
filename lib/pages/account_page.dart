@@ -24,7 +24,7 @@ class _AccountPageState extends State<AccountPage> {
   Future<void> fetchOrderHistory() async {
     if (user == null) {
       setState(() {
-        debugMessage = "No user logged in.";
+        debugMessage = "Қолданушы кірілмеді.";
         isLoading = false;
       });
       return;
@@ -58,7 +58,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Мой аккаунт",
+          "Менің аккаунтым",
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Color(0xff0A78D6),
@@ -85,7 +85,7 @@ class _AccountPageState extends State<AccountPage> {
 
                     // Order History Section
                     const Text(
-                      "История заказов",
+                      "Тапсырыстар тарихы",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class _AccountPageState extends State<AccountPage> {
                     if (orderHistory.isEmpty)
                       Center(
                         child: Text(
-                          "У вас пока нет заказов.",
+                          "Сізде әзір тапсырыстар жоқ.",
                           style: TextStyle(
                             fontSize: 16,
                             color: Colors.grey[500],
@@ -140,7 +140,7 @@ class _AccountPageState extends State<AccountPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user?.email ?? "Неизвестный пользователь",
+                      user?.email ?? "Қонақ",
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -149,7 +149,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Статус: Активный",
+                      "Статус: Қосулы",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
@@ -157,7 +157,7 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      "Дата регистрации: ${user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? '-'}",
+                      "Регистрация датасы: ${user?.metadata.creationTime?.toLocal().toString().split(' ')[0] ?? '-'}",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black,
@@ -191,7 +191,7 @@ class _AccountPageState extends State<AccountPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Заказ от: ${order['createdAt']?.toDate().toLocal()}",
+                "Заказ: ${order['createdAt']?.toDate().toLocal()}",
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -220,7 +220,7 @@ class _AccountPageState extends State<AccountPage> {
               ),
               const SizedBox(height: 8),
               Text(
-                "Общая сумма: ${order['totalPrice'].toStringAsFixed(2)} ₸",
+                "Барлығының суммасы: ${order['totalPrice'].toStringAsFixed(2)} ₸",
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,

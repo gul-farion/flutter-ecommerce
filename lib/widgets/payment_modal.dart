@@ -18,7 +18,7 @@ class _PaymentModalState extends State<PaymentModal> {
   final TextEditingController _cardHolderController = TextEditingController();
   final TextEditingController _expiryDateController = TextEditingController();
 
-  String _paymentMethod = 'Наличные'; // Способ оплаты по умолчанию
+  String _paymentMethod = 'Карта'; // Способ оплаты по умолчанию
   bool _isOrderComplete = false; // Для отображения сообщения об успехе
 
   @override
@@ -27,12 +27,12 @@ class _PaymentModalState extends State<PaymentModal> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: _isOrderComplete
           ? const Text(
-              "Заказ успешно оформлен!",
+              "Тапсырыс сәтті аяқталды!",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             )
           : const Text(
-              "Способ оплаты",
+              "Төлем әдісі",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
       content: _isOrderComplete
@@ -46,7 +46,7 @@ class _PaymentModalState extends State<PaymentModal> {
                 ),
                 SizedBox(height: 16),
                 Text(
-                  "Спасибо за ваш заказ!\nМы свяжемся с вами в ближайшее время.",
+                  "Тапсырысыңызға рахмет!\nБіз сізге жақын арада хабарласамыз.",
                   style: TextStyle(fontSize: 16),
                   textAlign: TextAlign.center,
                 ),
@@ -60,21 +60,21 @@ class _PaymentModalState extends State<PaymentModal> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     ChoiceChip(
-                      label: const Text('Картой'),
-                      selected: _paymentMethod == 'Картой',
+                      label: const Text('Карта'),
+                      selected: _paymentMethod == 'Карта',
                       onSelected: (selected) {
                         setState(() {
-                          _paymentMethod = 'Картой';
+                          _paymentMethod = 'Карта';
                         });
                       },
                     ),
                     const SizedBox(width: 8),
                     ChoiceChip(
-                      label: const Text('Наличные'),
-                      selected: _paymentMethod == 'Наличные',
+                      label: const Text('Қолма-қол'),
+                      selected: _paymentMethod == 'Қолма-қол',
                       onSelected: (selected) {
                         setState(() {
-                          _paymentMethod = 'Наличные';
+                          _paymentMethod = 'Қолма-қол';
                         });
                       },
                     ),
@@ -83,7 +83,7 @@ class _PaymentModalState extends State<PaymentModal> {
                 const SizedBox(height: 16),
 
                 // Форма для оплаты картой
-                if (_paymentMethod == 'Картой')
+                if (_paymentMethod == 'Карта')
                   Form(
                     key: _formKey,
                     child: Column(
@@ -97,16 +97,16 @@ class _PaymentModalState extends State<PaymentModal> {
                             _CardNumberInputFormatter(),
                           ],
                           decoration: const InputDecoration(
-                            labelText: "Номер карты",
+                            labelText: "Карта нөмірі",
                             hintText: "1234 5678 1234 5678",
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Введите номер карты";
+                              return "Карта нөмірлерін енгізіңіз";
                             }
                             if (value.replaceAll(' ', '').length != 16) {
-                              return "Номер карты должен содержать 16 цифр";
+                              return "Карта нөмірлері кем дегенде 16 символ болуы керек";
                             }
                             return null;
                           },
@@ -120,13 +120,13 @@ class _PaymentModalState extends State<PaymentModal> {
                                 RegExp(r'[A-Za-z\s]')),
                           ],
                           decoration: const InputDecoration(
-                            labelText: "Владелец карты",
+                            labelText: "Карта иесі (ағылшынша)",
                             hintText: "JOHN DOE",
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Введите имя владельца";
+                              return "Иесінің аты";
                             }
                             return null;
                           },
@@ -141,44 +141,44 @@ class _PaymentModalState extends State<PaymentModal> {
                             _ExpiryDateInputFormatter(),
                           ],
                           decoration: const InputDecoration(
-                            labelText: "Срок действия",
+                            labelText: "Жарамдылық мерзімі",
                             hintText: "MM/YY",
                             border: OutlineInputBorder(),
                           ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return "Введите срок действия";
+                              return "Жарамдылық мерзімін енгізіңіз";
                             }
                             if (!RegExp(r'^(0[1-9]|1[0-2])/\d{2}$')
                                 .hasMatch(value)) {
-                              return "Некорректный формат срока действия";
+                              return "Жарамдылық мерзім форматы дұрыс емес";
                             }
                             return null;
                           },
                         ),
                         TextFormField(
-  keyboardType: TextInputType.number,
-  maxLength: 3,
-  inputFormatters: [
-    FilteringTextInputFormatter.digitsOnly,
-    CVVInputFormatter(),
-  ],
-  decoration: const InputDecoration(
-    labelText: "CVC код",
-    hintText: "XXX",
-    border: OutlineInputBorder(),
-  ),
-  validator: (value) {
-    if (value == null || value.isEmpty) {
-      return "Введите CVC код";
-    }
-    if (value.length != 3 || !RegExp(r'^\d{3}$').hasMatch(value)) {
-      return "Некорректный формат CVC кода";
-    }
-    return null;
-  },
-),
-
+                          keyboardType: TextInputType.number,
+                          maxLength: 3,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly,
+                            CVVInputFormatter(),
+                          ],
+                          decoration: const InputDecoration(
+                            labelText: "CVC код",
+                            hintText: "XXX",
+                            border: OutlineInputBorder(),
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "CVC код енгізіңіз";
+                            }
+                            if (value.length != 3 ||
+                                !RegExp(r'^\d{3}$').hasMatch(value)) {
+                              return "CVC код форматы дұрыс емес";
+                            }
+                            return null;
+                          },
+                        ),
                       ],
                     ),
                   ),
@@ -265,4 +265,3 @@ class CVVInputFormatter extends TextInputFormatter {
     );
   }
 }
-

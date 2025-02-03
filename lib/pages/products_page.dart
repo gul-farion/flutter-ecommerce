@@ -40,7 +40,7 @@ class _AdminPageState extends State<AdminPage> {
         ),
         backgroundColor: const Color(0xff0A78D6),
         title: const Text(
-          "Управление товарами и категориями",
+          "Тауарлармен және категориялармен жұмыс",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -63,7 +63,7 @@ class _AdminPageState extends State<AdminPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Управление категориями",
+          "Категорияларды басқару",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
@@ -73,7 +73,7 @@ class _AdminPageState extends State<AdminPage> {
               child: TextField(
                 controller: _categoryController,
                 decoration: const InputDecoration(
-                  labelText: "Добавить категорию",
+                  labelText: "Категория қосу",
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -85,7 +85,7 @@ class _AdminPageState extends State<AdminPage> {
                 backgroundColor: const Color(0xff0A78D6),
                 foregroundColor: Colors.white,
               ),
-              child: const Text("Добавить"),
+              child: const Text("Қосу"),
             ),
           ],
         ),
@@ -98,7 +98,7 @@ class _AdminPageState extends State<AdminPage> {
               return const CircularProgressIndicator();
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Text("Категории отсутствуют.");
+              return const Text("Категориялар жоқ.");
             }
             return ListView.builder(
               shrinkWrap: true,
@@ -125,7 +125,7 @@ class _AdminPageState extends State<AdminPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Управление товарами",
+          "Тауарлар",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 16),
@@ -136,11 +136,11 @@ class _AdminPageState extends State<AdminPage> {
               return const CircularProgressIndicator();
             }
             if (snapshot.hasError || snapshot.data == null) {
-              return const Text("Ошибка загрузки категорий");
+              return const Text("Категорияларды жазуда қателік кетті");
             }
             return DropdownButtonFormField<String>(
               value: _selectedCategory,
-              hint: const Text("Выберите категорию"),
+              hint: const Text("Категорияны таңдаңыз"),
               items: snapshot.data,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
@@ -157,7 +157,7 @@ class _AdminPageState extends State<AdminPage> {
         TextField(
           controller: _productNameController,
           decoration: const InputDecoration(
-            labelText: "Название товара",
+            labelText: "Тауар аты",
             border: OutlineInputBorder(),
           ),
         ),
@@ -165,7 +165,7 @@ class _AdminPageState extends State<AdminPage> {
         TextField(
           controller: _productDescriptionController,
           decoration: const InputDecoration(
-            labelText: "Описание товара",
+            labelText: "Тауар сипаттамасы",
             border: OutlineInputBorder(),
           ),
         ),
@@ -175,7 +175,7 @@ class _AdminPageState extends State<AdminPage> {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: const InputDecoration(
-            labelText: "Цена товара",
+            labelText: "Тауар бағасы",
             border: OutlineInputBorder(),
           ),
         ),
@@ -183,7 +183,7 @@ class _AdminPageState extends State<AdminPage> {
         TextField(
           controller: _productImageController,
           decoration: const InputDecoration(
-            labelText: "Ссылка URL изображения товара",
+            labelText: "Тауардың суретінің URL сілтемесі",
             border: OutlineInputBorder(),
           ),
         ),
@@ -194,10 +194,10 @@ class _AdminPageState extends State<AdminPage> {
             backgroundColor: const Color(0xff0A78D6),
             foregroundColor: Colors.white,
           ),
-          child: const Text("Добавить товар"),
+          child: const Text("Тауар қосу"),
         ),
         const SizedBox(height: 16),
-        const Text("Все продукты", style: TextStyle(fontSize: 24)),
+        const Text("Барлық тауарлар", style: TextStyle(fontSize: 24)),
         StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance.collection('products').snapshots(),
           builder: (context, snapshot) {
@@ -205,7 +205,7 @@ class _AdminPageState extends State<AdminPage> {
               return const CircularProgressIndicator();
             }
             if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-              return const Text("Товары отсутствуют.");
+              return const Text("Тауарлар жоқ.");
             }
             return ListView.builder(
               shrinkWrap: true,
@@ -217,7 +217,7 @@ class _AdminPageState extends State<AdminPage> {
                     doc['image'],
                     width: 50,
                     height: 50,
-                    fit: BoxFit.cover,
+                    fit: BoxFit.contain,
                   ),
                   title: Text(doc['name']),
                   subtitle: Text("${doc['price']} ₸"),
@@ -254,14 +254,14 @@ class _AdminPageState extends State<AdminPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Редактировать продукт"),
+          title: const Text("Тауарды өзгерту"),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 TextField(
                   controller: _editNameController,
                   decoration: const InputDecoration(
-                    labelText: "Название товара",
+                    labelText: "Тауар аты",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -269,7 +269,7 @@ class _AdminPageState extends State<AdminPage> {
                 TextField(
                   controller: _editDescriptionController,
                   decoration: const InputDecoration(
-                    labelText: "Описание товара",
+                    labelText: "Тауар сипаттамасы",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -279,7 +279,7 @@ class _AdminPageState extends State<AdminPage> {
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: const InputDecoration(
-                    labelText: "Цена товара",
+                    labelText: "Тауар бағасы",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -287,7 +287,7 @@ class _AdminPageState extends State<AdminPage> {
                 TextField(
                   controller: _editImageController,
                   decoration: const InputDecoration(
-                    labelText: "URL изображения",
+                    labelText: "Сурет URL сілтемесі",
                     border: OutlineInputBorder(),
                   ),
                 ),
@@ -299,11 +299,11 @@ class _AdminPageState extends State<AdminPage> {
                       return const CircularProgressIndicator();
                     }
                     if (snapshot.hasError || snapshot.data == null) {
-                      return const Text("Ошибка загрузки категорий");
+                      return const Text("Категорияларды жазуда қателік кетті");
                     }
                     return DropdownButtonFormField<String>(
                       value: _editCategory,
-                      hint: const Text("Выберите категорию"),
+                      hint: const Text("Категорияны таңдаңыз"),
                       items: snapshot.data,
                       onChanged: (value) {
                         setState(() {
@@ -321,7 +321,7 @@ class _AdminPageState extends State<AdminPage> {
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text("Отмена"),
+              child: const Text("Артқа"),
             ),
             ElevatedButton(
               onPressed: () async {
@@ -337,7 +337,7 @@ class _AdminPageState extends State<AdminPage> {
                 });
                 Navigator.pop(context);
               },
-              child: const Text("Сохранить"),
+              child: const Text("Сақтау"),
             ),
           ],
         );

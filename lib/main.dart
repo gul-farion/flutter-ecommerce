@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'FOOTSHOP',
+      title: 'SPORTMODA',
       theme: ThemeData(
         iconTheme: IconThemeData(color: Colors.white),
         fontFamily: 'Raleway',

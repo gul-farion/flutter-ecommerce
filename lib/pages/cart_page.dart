@@ -16,7 +16,7 @@ class CartPage extends StatelessWidget {
       appBar: AppBar(
         iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
-          'Корзина',
+          'Себет',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: const Color(0xff0A78D6),
@@ -24,7 +24,7 @@ class CartPage extends StatelessWidget {
       body: cart.items.isEmpty
           ? const Center(
               child: Text(
-                'Ваша корзина пуста!',
+                'Себетіңіз бос!',
                 style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               ),
             )
@@ -84,7 +84,7 @@ class CartPage extends StatelessWidget {
                                         ),
                                         if (item.selectedSize != null)
                                           Text(
-                                            'Размер: ${item.selectedSize}',
+                                            'Өлшемі: ${item.selectedSize}',
                                             style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.grey,
@@ -189,7 +189,7 @@ class CartPage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           const Text(
-            'Обзор заказа',
+            'Тапсырысқа шолу',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
@@ -222,7 +222,7 @@ class CartPage extends StatelessWidget {
           ),
           const Divider(),
           Text(
-            'Итого: ${cart.totalPrice.toStringAsFixed(2)} ₸',
+            'Барлығы: ${cart.totalPrice.toStringAsFixed(2)} ₸',
             style: const TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
@@ -241,7 +241,7 @@ class CartPage extends StatelessWidget {
                           cart.clear();
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                              content: Text('Заказ успешно оформлен!'),
+                              content: Text('Тапсырыс жіберілді!'),
                             ),
                           );
                         },
@@ -252,7 +252,7 @@ class CartPage extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
             child: const Text(
-              'Оформить заказ',
+              'Тапсырыс ету',
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,

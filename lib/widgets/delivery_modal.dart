@@ -8,7 +8,7 @@ class DeliveryModal extends StatelessWidget {
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       title: const Text(
-        "Наши локации",
+        "Біздің орындарымыз",
         style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
@@ -17,20 +17,20 @@ class DeliveryModal extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _buildLocationItem(
-              city: "Актобе",
-              address: "проспект Абилкайыр хана, 52",
+              city: "Ақтөбе",
+              address: "Әбілқайыр хан даңғылы, 52",
               workTimeGraphic: "09:00 - 18:00",
             ),
             const SizedBox(height: 16),
             _buildLocationItem(
               city: "Астана",
-              address: "ул. Сыганак, 60/5",
+              address: "Сығанақ көшесі, 60/5",
               workTimeGraphic: "10:00 - 19:00",
             ),
             const SizedBox(height: 16),
             _buildLocationItem(
               city: "Алматы",
-              address: "ул. Сатпаева, 90",
+              address: "Сатпаев көшесі, 90",
               workTimeGraphic: "08:30 - 17:30",
             ),
           ],
@@ -39,7 +39,7 @@ class DeliveryModal extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),
-          child: const Text("Закрыть"),
+          child: const Text("Жабу", style: TextStyle(color: Color(0xff0A78D6)),),
         ),
       ],
     );
@@ -67,8 +67,8 @@ class DeliveryModal extends StatelessWidget {
         ),
         const SizedBox(height: 4),
         Text(
-          "График работы: $workTimeGraphic",
-          style: const TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+          "Жұмыс графигі: $workTimeGraphic",
+          style: const TextStyle(fontSize: 14),
         ),
       ],
     );

@@ -122,7 +122,7 @@ class _AppDrawerState extends State<AppDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              user?.email ?? "Гость",
+                              user?.email ?? "Қонақ",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 18,
@@ -132,8 +132,8 @@ class _AppDrawerState extends State<AppDrawer> {
                             const SizedBox(height: 4),
                             Text(
                               user != null
-                                  ? "Добро пожаловать!"
-                                  : "Пожалуйста, войдите",
+                                  ? "Қош келдіңіз!"
+                                  : "Аккаунтка кіру",
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -161,7 +161,7 @@ class _AppDrawerState extends State<AppDrawer> {
                         vertical: 10,
                       ),
                     ),
-                    child: const Text("Мой профиль"),
+                    child: const Text("Профильға кіру"),
                   ),
                 ),
               ],
@@ -173,7 +173,7 @@ class _AppDrawerState extends State<AppDrawer> {
             leading: const Icon(Icons.shopping_cart_checkout_outlined,
                 color: Colors.black),
             title: const Text(
-              "Категории",
+              "Категориялар",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             children: categories
@@ -196,7 +196,7 @@ class _AppDrawerState extends State<AppDrawer> {
           ),
           ListTile(
             leading: const Icon(Icons.location_pin, color: Colors.black),
-            title: const Text("Наши адреса"),
+            title: const Text("Біздің адрестеріміз"),
             onTap: () {
               showDialog(
                 context: context,
@@ -216,7 +216,7 @@ class _AppDrawerState extends State<AppDrawer> {
               return ListTile(
                 leading:
                     const Icon(Icons.admin_panel_settings, color: Colors.black),
-                title: const Text("Управление товарами"),
+                title: const Text("Тауарлармен жұмыс"),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -239,7 +239,7 @@ class _AppDrawerState extends State<AppDrawer> {
               if (user == null) {
                 return ListTile(
                   leading: const Icon(Icons.login, color: Colors.black),
-                  title: const Text("Войти в аккаунт"),
+                  title: const Text("Аккаунтқа кіру"),
                   onTap: () {
                     Navigator.pushNamed(context, '/profile');
                   },
@@ -247,12 +247,12 @@ class _AppDrawerState extends State<AppDrawer> {
               }
               return ListTile(
                 leading: const Icon(Icons.logout, color: Colors.black),
-                title: const Text("Выйти"),
+                title: const Text("Шығу"),
                 onTap: () async {
                   await FirebaseAuth.instance.signOut();
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      content: Text('Вы вышли из аккаунта'),
+                      content: Text('Сіз аккаунтыңыздан шықтыңыз'),
                     ),
                   );
                   Navigator.pop(context);

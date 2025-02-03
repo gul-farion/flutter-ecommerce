@@ -65,7 +65,7 @@ class CategoryPage extends StatelessWidget {
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
             return const Center(
               child: Text(
-                "В этой категории пока нет товаров",
+                "Бұл категорияда әзір тауарлар жоқ",
                 style: TextStyle(fontSize: 16),
               ),
             );
@@ -101,7 +101,7 @@ class CategoryPage extends StatelessWidget {
                   cartProvider.addItem(foodItem);
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content: Text('${foodItem.name} добавлен в корзину'),
+                      content: Text('${foodItem.name} себетке қосылды'),
                     ),
                   );
                 },
@@ -211,7 +211,7 @@ class CategoryPage extends StatelessWidget {
 
                         const SizedBox(height: 16),
                         Text(
-                          'Цена: ${foodItem.price.toStringAsFixed(2)} ₸',
+                          'Баға: ${foodItem.price.toStringAsFixed(2)} ₸',
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -249,7 +249,7 @@ class CategoryPage extends StatelessWidget {
                             ),
                           ),
                           child: const Text(
-                            'Добавить в корзину',
+                            'Себетке қосу',
                             style: TextStyle(color: Colors.white),
                           ),
                         ),

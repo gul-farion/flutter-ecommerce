@@ -104,7 +104,7 @@ class _FoodCardState extends State<FoodCard> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Цена: ${widget.foodItem.price.toStringAsFixed(0)} ₸',
+                        'Баға: ${widget.foodItem.price.toStringAsFixed(0)} ₸',
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.w500,

@@ -67,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            isLogin ? "Вход" : "Регистрация",
+            isLogin ? "Кіру" : "Тіркелу",
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -96,7 +96,7 @@ class _ProfilePageState extends State<ProfilePage> {
             controller: _passwordController,
             obscureText: true,
             decoration: InputDecoration(
-              labelText: "Пароль",
+              labelText: "Құпия сөз",
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
               ),
@@ -116,7 +116,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             child: Text(
-              isLogin ? "Войти" : "Зарегистрироваться",
+              isLogin ? "Кіру" : "Тіркелу",
               style: const TextStyle(fontSize: 16),
             ),
           ),
@@ -130,8 +130,8 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             child: Text(
               isLogin
-                  ? "Нет аккаунта? Зарегистрироваться"
-                  : "Уже есть аккаунт? Войти",
+                  ? "Аккаунт жоқ? Тіркелу"
+                  : "Аккаунт бар? Кіру",
               style: const TextStyle(color: Color(0xFF4A148C)),
             ),
           ),
@@ -145,7 +145,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      _showSnackBar("Заполните все поля");
+      _showSnackBar("Барлық мәтін өрістерін толтырыңыз");
       return;
     }
 
@@ -157,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       Navigator.pushReplacementNamed(context, '/'); 
     } on FirebaseAuthException catch (e) {
-      _showSnackBar("Ошибка: ${e.message}");
+      _showSnackBar("Қате: ${e.message}");
     } finally {
       setState(() {
         isLoading = false;
@@ -170,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      _showSnackBar("Заполните все поля");
+      _showSnackBar("Барлық мәтін өрістерін толтырыңыз");
       return;
     }
 
@@ -183,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
           email: email, password: password);
       Navigator.pushReplacementNamed(context, '/');
     } on FirebaseAuthException catch (e) {
-      _showSnackBar("Ошибка: ${e.message}");
+      _showSnackBar("Қате: ${e.message}");
     } finally {
       setState(() {
         isLoading = false;

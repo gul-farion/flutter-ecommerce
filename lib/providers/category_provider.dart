@@ -12,7 +12,7 @@ class CategoryProvider extends ChangeNotifier {
   Future<void> fetchAllFoodItems() async {
   try {
     isLoading = true;
-    debugMessage = "Fetching all items...";
+    debugMessage = "Загрузка всех товаров...";
     notifyListeners();
 
     final snapshot = await FirebaseFirestore.instance.collection('products').get();
